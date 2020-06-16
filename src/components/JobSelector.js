@@ -2,7 +2,6 @@ import React from "react";
 import ToggleButton from "./ToggleButton";
 import { useJobs } from "contexts/Jobs";
 import joblist from "config/jobs";
-import characters from "config/characters";
 import { Image, Flex } from "@chakra-ui/core";
 import { useSettings } from "contexts/Settings";
 
@@ -36,7 +35,7 @@ const ToggleAllButton = () => {
 
 const JobToggleButton = ({ job }) => {
   const { jobs, toggleJob } = useJobs();
-  const { character } = useSettings();
+  const { character, translation } = useSettings();
 
   return (
     <SelectorButton
@@ -44,11 +43,8 @@ const JobToggleButton = ({ job }) => {
       handleClick={() => toggleJob(job.id)}
     >
       <Flex direction="column" align="center">
-        <Image
-          src={`/assets/jobs/${character}/${job.id}.png`}
-          alt={job}
-        />
-        {job.id}
+        <Image src={`/assets/jobs/${character}/${job.id}.png`} alt={job} />
+        {job.name[translation]}
       </Flex>
     </SelectorButton>
   );
