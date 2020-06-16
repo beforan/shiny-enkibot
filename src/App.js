@@ -1,10 +1,18 @@
 import React from "react";
-import data from "./built/enki.json"
 import { EnkidataProvider } from "./contexts/Enkidata";
 import Info from "./components/Info";
+import { JobsProvider } from "./contexts/Jobs";
+import JobSelector from "components/JobSelector";
 
-const App = () => <EnkidataProvider value={data}>
-  <Info />
-</EnkidataProvider>
+const App = () => {
+  return (
+    <JobsProvider>
+      <EnkidataProvider>
+        {/* <Info /> */}
+        <JobSelector />
+      </EnkidataProvider>
+    </JobsProvider>
+  );
+};
 
 export default App;
