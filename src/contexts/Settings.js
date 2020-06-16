@@ -1,7 +1,42 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 import characters from "config/characters";
 import translations from "config/translations";
-import produce from "immer";
+
+// storage
+const storageKey = "shiny-enkibot-settings";
+const isStorageSupported = typeof Storage !== "undefined";
+const storage = {
+  get: () =>
+    isStorageSupported && JSON.parse(window.localStorage.getItem(storageKey)),
+  set: (v) =>
+    isStorageSupported &&
+    window.localStorage.setItem(storageKey, JSON.stringify(v)),
+};
+
+// storage backed state
+const useSettingsState = () => {
+  const [settings, setSettings] = useState(defaults);
+  useEffect(() => {
+    const stored = storage.get();
+
+    if (!stored) {
+      setSettings(defaults);
+      return;
+    }
+
+    if (!stored || stored === settings) return;
+    setSettings(stored);
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (settings) {
+      storage.set(settings);
+    }
+  }, [settings]);
+
+  return [settings, setSettings];
+};
 
 const defaults = {
   character: characters.Butz.id,
@@ -17,8 +52,7 @@ const SettingsContext = createContext({
 export const useSettings = () => useContext(SettingsContext);
 
 export const SettingsProvider = ({ children }) => {
-  // TODO: save settings in storage a la ColorMode?
-  const [settings, setSettings] = useState(defaults);
+  const [settings, setSettings] = useSettingsState();
 
   const setTranslation = (t) => setSettings({ ...settings, translation: t });
   const setCharacter = (c) => setSettings({ ...settings, character: c });
