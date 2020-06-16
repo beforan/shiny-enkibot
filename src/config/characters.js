@@ -2,7 +2,7 @@ import tr from "config/translations";
 
 export default {
   Butz: {
-    id: "butz",
+    id: "Butz",
     name: {
       [tr.Advance]: "Bartz",
       [tr.RPGe]: "Butz",
@@ -10,7 +10,7 @@ export default {
     },
   },
   Lenna: {
-    id: "lenna",
+    id: "Lenna",
     name: {
       [tr.Advance]: "Lenna",
       [tr.RPGe]: "Lenna",
@@ -18,7 +18,7 @@ export default {
     },
   },
   Galuf: {
-    id: "galuf",
+    id: "Galuf",
     name: {
       [tr.Advance]: "Galuf",
       [tr.RPGe]: "Galuf",
@@ -26,7 +26,7 @@ export default {
     },
   },
   Faris: {
-    id: "faris",
+    id: "Faris",
     name: {
       [tr.Advance]: "Faris",
       [tr.RPGe]: "Faris",
@@ -34,7 +34,7 @@ export default {
     },
   },
   Krile: {
-    id: "krile",
+    id: "Krile",
     name: {
       [tr.Advance]: "Krile",
       [tr.RPGe]: "Cara",

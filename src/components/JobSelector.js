@@ -3,8 +3,8 @@ import ToggleButton from "./ToggleButton";
 import { useJobs } from "contexts/Jobs";
 import joblist from "config/jobs";
 import characters from "config/characters";
-import tr from "config/translations";
-import { Box, Image, Flex, Collapse } from "@chakra-ui/core";
+import { Image, Flex } from "@chakra-ui/core";
+import { useSettings } from "contexts/Settings";
 
 const SelectorButton = ({ checked, handleClick, children }) => {
   return (
@@ -36,6 +36,7 @@ const ToggleAllButton = () => {
 
 const JobToggleButton = ({ job }) => {
   const { jobs, toggleJob } = useJobs();
+  const { character } = useSettings();
 
   return (
     <SelectorButton
@@ -44,7 +45,7 @@ const JobToggleButton = ({ job }) => {
     >
       <Flex direction="column" align="center">
         <Image
-          src={`/assets/jobs/${characters.Butz.id}/${job.id}.png`}
+          src={`/assets/jobs/${character}/${job.id}.png`}
           alt={job}
         />
         {job.id}

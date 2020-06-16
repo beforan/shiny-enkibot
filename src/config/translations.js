@@ -1,5 +1,5 @@
 export default {
-  Advance: "advance",
-  RPGe: "rpge",
-  Anthology: "anthology",
+  Advance: "Advance",
+  RPGe: "RPGe",
+  Anthology: "Anthology",
 };
