@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import {
   IconButton,
   useDisclosure,
@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/core";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { useSettings } from "contexts/Settings";
-import translations from "config/translations";
+import * as locales from "config/locales";
 import characters from "config/characters";
 
 const SectionHeading = ({ children }) => (
@@ -52,7 +52,7 @@ const ColorModeToggle = () => {
 };
 
 const TranslationMenu = () => {
-  const { translation, setTranslation } = useSettings();
+  const { locale, setLocale } = useSettings();
 
   return (
     <>
@@ -63,11 +63,11 @@ const TranslationMenu = () => {
           width="100%"
           justifyContent="space-between"
         >
-          {translation}
+          {locale}
         </MenuButton>
         <MenuList>
-          {Object.keys(translations).map((k) => (
-            <MenuItem key={k} onClick={() => setTranslation(k)}>
+          {Object.keys(locales).map((k) => (
+            <MenuItem key={k} onClick={() => setLocale(k)}>
               {k}
             </MenuItem>
           ))}
@@ -77,25 +77,22 @@ const TranslationMenu = () => {
   );
 };
 
-const Character = memo(
-  ({ id, name }) => (
-    <>
-      <Image
-        htmlWidth="24px"
-        htmlHeight="32px"
-        src={`/assets/jobs/${id}/${id}.png`}
-        alt={name}
-        mr="12px"
-      />
-      <span>{name}</span>
-    </>
-  ),
-  (prev, next) => prev.id === next.id && prev.name === next.name
+const Character = ({ id, name }) => (
+  <>
+    <Image
+      htmlWidth="24px"
+      htmlHeight="32px"
+      src={`/assets/jobs/${id}/${id}.png`}
+      alt={name}
+      mr="12px"
+    />
+    <span>{name}</span>
+  </>
 );
 
 const CharacterMenu = () => {
-  const { translation, character, setCharacter } = useSettings();
-  const currentName = characters[character].name[translation];
+  const { locale, character, setCharacter } = useSettings();
+  const currentName = characters[character].name(locale);
 
   return (
     <>
@@ -111,7 +108,7 @@ const CharacterMenu = () => {
         <MenuList>
           {Object.keys(characters).map((k) => (
             <MenuItem key={k} onClick={() => setCharacter(k)} height="40px">
-              <Character id={k} name={characters[k].name[translation]} />
+              <Character id={k} name={characters[k].name(locale)} />
             </MenuItem>
           ))}
         </MenuList>

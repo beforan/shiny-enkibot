@@ -1,173 +1,63 @@
-import tr from "config/translations";
+import { RPGe, Advance, Anthology } from "config/locales";
+import { forLocale, localise } from "helpers/localisation";
 
-// TODO: fix translations, which crystal, etc.
+class Job {
+  constructor(id, name) {
+    this.id = id;
+    const n = typeof name === "string" ? localise(name) : name;
+    this.name = (locale) => forLocale(n, locale);
+  }
+}
+
+// TODO: other metadata? which crystal, etc.
 export default {
   // Wind
-  Knight: {
-    id: "KGT",
-    name: {
-      [tr.Advance]: "Knight",
-      [tr.RPGe]: "Knight",
-      [tr.Anthology]: "Knight",
-    },
-  },
-  Monk: {
-    id: "MNK",
-    name: {
-      [tr.Advance]: "Monk",
-      [tr.RPGe]: "Monk",
-      [tr.Anthology]: "Monk",
-    },
-  },
-  Thief: {
-    id: "THF",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  BlackMage: {
-    id: "BLM",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  WhiteMage: {
-    id: "WHM",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  BlueMage: {
-    id: "BLU",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
+  Knight: new Job("KGT", "Knight"),
+  Monk: new Job("MNK", "Monk"),
+  Thief: new Job("THF", "Thief"),
+  BlackMage: new Job(
+    "BLM",
+    localise("Black Mage", {
+      [RPGe]: "BlackMage",
+      [Anthology]: "B. Mage",
+    })
+  ),
+  WhiteMage: new Job(
+    "WHM",
+    localise("White Mage", {
+      [RPGe]: "WhiteMage",
+      [Anthology]: "W. Mage",
+    })
+  ),
+  BlueMage: new Job("BLU", localise("BlueMage", { [Advance]: "Blue Mage" })),
 
   // Water
-  Berserker: {
-    id: "BER",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  MysticKnight: {
-    id: "MYS",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  TimeMage: {
-    id: "TIM",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  Summoner: {
-    id: "SUM",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  RedMage: {
-    id: "RDM",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
+  Berserker: new Job("BER", localise("Berserker", { [RPGe]: "Berserkr" })),
+  MysticKnight: new Job(
+    "MYS",
+    localise("Mystic Knight", {
+      [RPGe]: "MysticKnt",
+      [Anthology]: "Sorcerer",
+    })
+  ),
+  TimeMage: new Job("TIM", localise("TimeMage", { [Advance]: "Time Mage" })),
+  Summoner: new Job("SUM", "Summoner"),
+  RedMage: new Job("RDM", "Red Mage"),
   // Mime
 
   // Fire
-  Beastmaster: {
-    id: "BST",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  Geomancer: {
-    id: "GEO",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  Ninja: {
-    id: "NIN",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  Bard: {
-    id: "BRD",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  Ranger: {
-    id: "RAN",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
+  Beastmaster: new Job(
+    "BST",
+    localise("Beastmaster", { [RPGe]: "Mediator", [Anthology]: "Trainer" })
+  ),
+  Geomancer: new Job("GEO", localise("Geomancr", { [Advance]: "Geomancer" })),
+  Ninja: new Job("NIN", "Ninja"),
+  Bard: new Job("BRD", "Bard"),
+  Ranger: new Job("RAN", localise("Hunter", { [Advance]: "Ranger" })),
 
   // Earth
-  Samurai: {
-    id: "SAM",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  Dragoon: {
-    id: "DRG",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  Dancer: {
-    id: "DNC",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  Chemist: {
-    id: "CHM",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
+  Samurai: new Job("SAM", "Samurai"),
+  Dragoon: new Job("DRG", localise("Dragoon", { [Anthology]: "Lancer" })),
+  Dancer: new Job("DNC", "Dancer"),
+  Chemist: new Job("CHM", "Chemist"),
 };

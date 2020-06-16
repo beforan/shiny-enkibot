@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 import characters from "config/characters";
-import translations from "config/translations";
+import * as locales from "config/locales";
 
 // storage
 const storageKey = "shiny-enkibot-settings";
@@ -40,13 +40,13 @@ const useSettingsState = () => {
 
 const defaults = {
   character: characters.Butz.id,
-  translation: translations.RPGe,
+  locale: locales.RPGe,
 };
 
 const SettingsContext = createContext({
   ...defaults,
   setCharacter: (character) => {},
-  setTranslation: (translation) => {},
+  setLocale: (locale) => {},
 });
 
 export const useSettings = () => useContext(SettingsContext);
@@ -54,10 +54,10 @@ export const useSettings = () => useContext(SettingsContext);
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useSettingsState();
 
-  const setTranslation = (t) => setSettings({ ...settings, translation: t });
-  const setCharacter = (c) => setSettings({ ...settings, character: c });
+  const setLocale = (locale) => setSettings({ ...settings, locale });
+  const setCharacter = (character) => setSettings({ ...settings, character });
 
-  const value = { ...settings, setCharacter, setTranslation };
+  const value = { ...settings, setCharacter, setLocale };
 
   return <SettingsContext.Provider value={value} children={children} />;
 };

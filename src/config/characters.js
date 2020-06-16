@@ -1,44 +1,17 @@
-import tr from "config/translations";
+import { RPGe, Anthology } from "config/locales";
+import { forLocale, localise } from "helpers/localisation";
+
+class Character {
+  constructor(id, nameLocales) {
+    this.id = id;
+    this.name = (locale) => forLocale(localise(id, nameLocales), locale);
+  }
+}
 
 export default {
-  Butz: {
-    id: "Butz",
-    name: {
-      [tr.Advance]: "Bartz",
-      [tr.RPGe]: "Butz",
-      [tr.Anthology]: "Bartz",
-    },
-  },
-  Lenna: {
-    id: "Lenna",
-    name: {
-      [tr.Advance]: "Lenna",
-      [tr.RPGe]: "Lenna",
-      [tr.Anthology]: "Lenna",
-    },
-  },
-  Galuf: {
-    id: "Galuf",
-    name: {
-      [tr.Advance]: "Galuf",
-      [tr.RPGe]: "Galuf",
-      [tr.Anthology]: "Galuf",
-    },
-  },
-  Faris: {
-    id: "Faris",
-    name: {
-      [tr.Advance]: "Faris",
-      [tr.RPGe]: "Faris",
-      [tr.Anthology]: "Faris",
-    },
-  },
-  Krile: {
-    id: "Krile",
-    name: {
-      [tr.Advance]: "Krile",
-      [tr.RPGe]: "Cara",
-      [tr.Anthology]: "Krile",
-    },
-  },
+  Butz: new Character("Butz", localise("Bartz", { [RPGe]: "Butz" })),
+  Lenna: new Character("Lenna", { [Anthology]: "Reina" }),
+  Galuf: new Character("Galuf"),
+  Faris: new Character("Faris"),
+  Krile: new Character("Krile", { [RPGe]: "Cara" }),
 };
