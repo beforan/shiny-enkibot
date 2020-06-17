@@ -5,6 +5,7 @@ import JobSelector from "components/JobSelector";
 import { SettingsProvider } from "contexts/Settings";
 import { Flex, Grid } from "@chakra-ui/core";
 import AppBar from "components/AppBar";
+import Tips from "components/Tips";
 
 const AppContextProvider = ({ children }) => (
   <SettingsProvider>
@@ -26,11 +27,13 @@ const App = () => {
           <AppBar />
         </Flex>
 
-        <Flex display={{base: "none", md: "flex"}}>
+        <Flex display={{ base: "none", md: "flex" }}>
           <JobSelector />
         </Flex>
 
-        <Flex>Test</Flex>
+        <Flex gridColumn={{ base: "span 2", md: "inherit" }}>
+          <Tips />
+        </Flex>
       </Grid>
     </AppContextProvider>
   );

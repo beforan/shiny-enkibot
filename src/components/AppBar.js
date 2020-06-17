@@ -15,12 +15,16 @@ const AppBar = () => (
     <Flex visibility={{ base: "visible", md: "hidden" }}>
       <JobDrawer />
     </Flex>
+
     <Heading size="lg" fontWeight="medium">
       Shiny Enkibot
     </Heading>
+
     <Stack spacing={2} isInline shouldWrapChildren>
       <InfoDrawer />
+
       <SettingsMenu />
+
       <IconButton
         as={Link}
         icon={FaGithub}
