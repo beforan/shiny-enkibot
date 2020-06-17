@@ -14,7 +14,6 @@ import {
 import { FaChevronRight, FaChevronDown } from "react-icons/fa";
 import { useSettings } from "contexts/Settings";
 import joblist from "config/jobs";
-import { GiRayGun } from "react-icons/gi";
 
 const groupTips = (tips) =>
   // ok, we wanna group tips in contiguous blocks by job tags
@@ -54,7 +53,7 @@ const GroupJobs = ({ jobs }) => {
     p: 2,
     bg: "gray.700",
     borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
+    borderBottomLeftRadius: 5, 
   };
 
   // No jobs
