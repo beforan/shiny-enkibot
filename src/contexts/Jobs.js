@@ -25,7 +25,7 @@ export const JobsProvider = ({ children }) => {
   };
 
   const clearJobs = () => setJobs([]);
-  const allJobs = () => setJobs(Object.keys(joblist).map((k) => joblist[k].id));
+  const allJobs = () => setJobs(Object.keys(joblist));
 
   const value = { jobs, toggleJob, clearJobs, allJobs };
 

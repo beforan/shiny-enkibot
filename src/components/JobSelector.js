@@ -41,8 +41,8 @@ const JobToggleButton = ({ job }) => {
 
   return (
     <SelectorButton
-      checked={jobs.includes(job.id)}
-      handleClick={() => toggleJob(job.id)}
+      checked={jobs.includes(job.key)}
+      handleClick={() => toggleJob(job.key)}
     >
       <Grid width="100%" templateColumns="40px 1fr" align="center">
         <Image
@@ -73,8 +73,8 @@ const JobSelector = () => {
         shouldWrapChildren
         style={{ overflowY: "scroll" }}
       >
-        {Object.keys(joblist).map((k) => (
-          <JobToggleButton key={k} job={joblist[k]} />
+        {Object.keys(joblist).map((key) => (
+          <JobToggleButton key={key} job={{key, ...joblist[key]}} />
         ))}
       </Stack>
     </Stack>
