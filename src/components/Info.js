@@ -1,12 +1,27 @@
 import React from "react";
 import { Stack } from "@chakra-ui/core";
 import { useEnkidata } from "../contexts/Enkidata";
+import AppDrawer, { SectionHeading } from "./AppDrawer";
 
-const Info = () => {
+export const Info = () => {
   const { Intro } = useEnkidata();
-  console.log(Intro)
 
-  return <Stack>{Intro.map((entry, i) => <div key={i}>{entry.body}</div>)}</Stack>;
+  return (
+    <Stack>
+      {Intro.map((entry, i) => (
+        <div key={i}>{entry.body}</div>
+      ))}
+    </Stack>
+  );
 };
 
-export default Info;
+const InfoDrawer = () => (
+  <AppDrawer header="About Shiny Enkibot" icon="info-outline" size="lg">
+    <Stack spacing={2} shouldWrapChildren>
+      <SectionHeading>Enkibot info</SectionHeading>
+      <Info />
+    </Stack>
+  </AppDrawer>
+);
+
+export default InfoDrawer;

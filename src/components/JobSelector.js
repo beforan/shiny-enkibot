@@ -4,6 +4,8 @@ import { useJobs } from "contexts/Jobs";
 import joblist from "config/jobs";
 import { Image, Flex, Stack, Grid } from "@chakra-ui/core";
 import { useSettings } from "contexts/Settings";
+import AppDrawer from "./AppDrawer";
+import { GiBroadsword } from "react-icons/gi";
 
 const SelectorButton = ({ checked, handleClick, children }) => {
   return (
@@ -59,12 +61,18 @@ const JobToggleButton = ({ job }) => {
 
 const JobSelector = () => {
   return (
-    <Stack spacing={2} width="300px" height="500px">
+    <Stack spacing={2} pt={2} width="100%">
       <Flex pl={2} pr={6}>
         <ToggleAllButton />
       </Flex>
-      
-      <Stack px={2} spacing={2} shouldWrapChildren style={{ overflow: "auto" }}>
+
+      <Stack
+        px={2}
+        pb={2}
+        spacing={2}
+        shouldWrapChildren
+        style={{ overflowY: "scroll" }}
+      >
         {Object.keys(joblist).map((k) => (
           <JobToggleButton key={k} job={joblist[k]} />
         ))}
@@ -72,5 +80,21 @@ const JobSelector = () => {
     </Stack>
   );
 };
+
+export const JobDrawer = () => (
+  <AppDrawer
+    header="Filter Jobs"
+    button={
+      <Flex align="center">
+        <Flex as={GiBroadsword} mr={2} />
+        Jobs
+      </Flex>
+    }
+    placement="left"
+    scrollBehavior="inline"
+  >
+      <JobSelector />
+  </AppDrawer>
+);
 
 export default JobSelector;

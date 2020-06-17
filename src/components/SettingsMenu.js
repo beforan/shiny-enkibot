@@ -1,13 +1,5 @@
 import React from "react";
 import {
-  IconButton,
-  useDisclosure,
-  Drawer,
-  DrawerOverlay,
-  DrawerHeader,
-  DrawerCloseButton,
-  DrawerBody,
-  DrawerContent,
   useColorMode,
   Button,
   Menu,
@@ -15,19 +7,13 @@ import {
   MenuList,
   MenuItem,
   Stack,
-  Heading,
   Image,
 } from "@chakra-ui/core";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { useSettings } from "contexts/Settings";
 import * as locales from "config/locales";
 import characters from "config/characters";
-
-const SectionHeading = ({ children }) => (
-  <Heading fontWeight="medium" size="sm">
-    {children}
-  </Heading>
-);
+import AppDrawer, { SectionHeading } from "./AppDrawer";
 
 const ColorModeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -117,35 +103,19 @@ const CharacterMenu = () => {
   );
 };
 
-const SettingsMenu = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const SettingsMenu = () => (
+  <AppDrawer header="Settings" icon="settings">
+    <Stack spacing={2} shouldWrapChildren width="100%">
+      <SectionHeading>Color Mode</SectionHeading>
+      <ColorModeToggle />
 
-  return (
-    <>
-      <IconButton icon="settings" onClick={onOpen} />
+      <SectionHeading>Game Translation</SectionHeading>
+      <TranslationMenu />
 
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Settings</DrawerHeader>
-
-          <DrawerBody>
-            <Stack spacing={2} shouldWrapChildren>
-              <SectionHeading>Color Mode</SectionHeading>
-              <ColorModeToggle />
-
-              <SectionHeading>Game Translation</SectionHeading>
-              <TranslationMenu />
-
-              <SectionHeading>Sprite Character</SectionHeading>
-              <CharacterMenu />
-            </Stack>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    </>
-  );
-};
+      <SectionHeading>Sprite Character</SectionHeading>
+      <CharacterMenu />
+    </Stack>
+  </AppDrawer>
+);
 
 export default SettingsMenu;
