@@ -1,3 +1,4 @@
+import { Box, Button, Code, Stack } from "@chakra-ui/react";
 import Head from "next/head";
 import { useState } from "react";
 import { getEnkibotJson } from "../lib/enki-data";
@@ -18,17 +19,19 @@ const HeadTag = () => (
 );
 
 const Home = ({ enkiData }) => {
-  const [showData, setShowData] = useState(false);
+  const [showData, setShowData] = useState(true);
   return (
     <>
       <HeadTag />
 
-      <div>Hello World!</div>
+      <Stack>
+        <Box>Hello World!</Box>
 
-      <button onClick={() => setShowData(!showData)}>
-        {showData ? "Hide" : "Show"} Data
-      </button>
-      {showData && <pre>{JSON.stringify(enkiData, null, 2)}</pre>}
+        <Button onClick={() => setShowData(!showData)}>
+          {showData ? "Hide" : "Show"} Data
+        </Button>
+        {showData && <pre>{JSON.stringify(enkiData, null, 2)}</pre>}
+      </Stack>
     </>
   );
 };
