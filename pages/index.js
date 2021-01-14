@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { getEnkibotJson } from "../lib/enki-data/enki-data";
+import { getEnkibotJson } from "../lib/enki-data";
 
 export const getStaticProps = async () => {
   const enkiData = JSON.parse(JSON.stringify(await getEnkibotJson()));
