@@ -12,7 +12,7 @@ export const getStaticProps = async () => {
 
 const HeadTag = () => (
   <Head>
-    <title>Create Next App</title>
+    <title>Shiny Enkibot</title>
     <link rel="icon" href="/favicon.ico" />
   </Head>
 );
@@ -22,7 +22,7 @@ const Home = ({ enkiData }) => {
   return (
     <>
       <HeadTag />
-      
+
       <div>Hello World!</div>
 
       <button onClick={() => setShowData(!showData)}>
