@@ -1,7 +1,8 @@
-import { Container, Stack } from "@chakra-ui/react";
+import { Container, Flex, Grid, Stack } from "@chakra-ui/react";
 import Head from "next/head";
 import { getEnkibotJson } from "lib/enki-data";
 import { Section } from "components/Tips";
+import AppBar from "components/AppBar";
 
 export const getStaticProps = async () => {
   const enkiData = JSON.parse(JSON.stringify(await getEnkibotJson()));
@@ -23,23 +24,34 @@ const Home = ({ enkiData }) => {
     <>
       <HeadTag />
 
-      <Container>
-        <Stack>
-          {/* <Button onClick={() => setShowData(!showData)}>
-          {showData ? "Hide" : "Show"} Data
-          </Button>
-        {showData && <pre>{JSON.stringify(enkiData, null, 2)}</pre>} */}
+      <Grid
+        templateRows="auto minmax(200px, 1fr)"
+        templateColumns="300px 1fr"
+        height="100vh"
+      >
+        <Flex gridColumn="span 2">
+          <AppBar />
+        </Flex>
 
-          {Object.keys(enkiData).map((section) => {
-            // skip the intro from the tips list
-            // we'll hide it in a menu
-            if (section === "Intro") return null;
+        <Flex>Job Picker</Flex>
 
-            // TODO: filter sections? Anchor them?
-            return <Section title={section} groups={enkiData[section]} />;
-          })}
-        </Stack>
-      </Container>
+        <Flex overflow="auto" pt={4}>
+          <Container maxW="120ch">
+            <Stack>
+              {Object.keys(enkiData).map((section, i) => {
+                // skip the intro from the tips list
+                // we'll hide it in a menu
+                if (section === "Intro") return null;
+
+                // TODO: filter sections? Anchor them?
+                return (
+                  <Section key={i} title={section} groups={enkiData[section]} />
+                );
+              })}
+            </Stack>
+          </Container>
+        </Flex>
+      </Grid>
     </>
   );
 };

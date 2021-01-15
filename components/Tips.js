@@ -9,18 +9,7 @@ import {
   Stack,
   useDisclosure,
 } from "@chakra-ui/react";
-import {
-  buildColorModeObjects,
-  useColorModeObject,
-} from "lib/colorModeObjects";
 import JobsIcon from "./JobsIcon";
-
-const styles = {
-  section: buildColorModeObjects(
-    { borderRadius: 5, bg: "gray.200" },
-    { bg: "gray.900" }
-  ),
-};
 
 const SectionHeading = ({ children, onToggle, isOpen }) => (
   <Flex p={2} onClick={onToggle} cursor="pointer" align="center">
@@ -33,8 +22,6 @@ const Section = ({ title, groups }) => {
   // TODO: jobs filtering
 
   const { isOpen, onToggle } = useDisclosure();
-
-  const styleProps = useColorModeObject(styles.section);
 
   return (
     <Stack layerStyle="ff7" spacing={0} boxShadow="">
