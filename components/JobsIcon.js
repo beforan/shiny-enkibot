@@ -1,14 +1,15 @@
 import { Flex, Grid, HStack, Icon, Image } from "@chakra-ui/react";
+import { Fragment } from "react";
 import { FaPlus } from "react-icons/fa";
 
 const JobsIcon = ({ jobs }) => {
   return (
     <HStack>
       {jobs.map((job, i) => (
-        <>
-          <JobIcon key={i} job={job} />
+        <Fragment key={i}>
+          <JobIcon job={job} />
           {i < jobs.length - 1 && <Icon as={FaPlus} />}
-        </>
+        </Fragment>
       ))}
     </HStack>
   );
