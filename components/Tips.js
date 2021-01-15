@@ -1,19 +1,23 @@
-import { FaChevronDown, FaChevronRight } from "react-icons/fa";
+import { FaChevronDown, FaChevronRight, FaInfoCircle } from "react-icons/fa";
 import {
+  Box,
   Collapse,
   Flex,
   Heading,
+  HStack,
   Icon,
   Stack,
-  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { buildColorModeObjects } from "lib/colorModeObjects";
+import {
+  buildColorModeObjects,
+  useColorModeObject,
+} from "lib/colorModeObjects";
 import JobsIcon from "./JobsIcon";
 
 const styles = {
   section: buildColorModeObjects(
-    { padding: 2, borderRadius: 5, bg: "gray.300" },
+    { borderRadius: 5, bg: "gray.200" },
     { bg: "gray.900" }
   ),
 };
@@ -30,19 +34,16 @@ const Section = ({ title, groups }) => {
 
   const { isOpen, onToggle } = useDisclosure();
 
-  const styleProps = useColorModeValue(
-    styles.section.light,
-    styles.section.dark
-  );
+  const styleProps = useColorModeObject(styles.section);
 
   return (
-    <Stack {...styleProps} spacing={0}>
+    <Stack layerStyle="ff7" spacing={0} boxShadow="">
       <SectionHeading onToggle={onToggle} isOpen={isOpen}>
         {title}
       </SectionHeading>
 
       <Collapse in={isOpen} animateOpacity>
-        <Stack mt={2}>
+        <Stack p={2}>
           {groups.map((group, i) => (
             <TipsGroup {...group} key={i} />
           ))}
@@ -52,19 +53,45 @@ const Section = ({ title, groups }) => {
   );
 };
 
-const TipsGroup = ({ jobs, tips }) => (
-  <>
-    {jobs && (
-      <Heading size="sm">
-        {jobs.map((combo, i) => (
-          <JobsIcon key={i} jobs={combo} />
+const TipsGroup = ({ jobs, tips }) => {
+  return (
+    <div>
+      <GroupJobs jobs={jobs} />
+
+      <Stack w="100%" p={2} pt={8} boxShadow="lg" layerStyle="ff7">
+        {tips.map((t, i) => (
+          <Flex key={i}>{t}</Flex>
         ))}
-      </Heading>
-    )}
-    {tips.map((tip, i) => (
-      <div key={i}>{tip}</div>
-    ))}
-  </>
-);
+      </Stack>
+    </div>
+  );
+};
+
+const GroupJobs = ({ jobs }) => {
+  const boxStyles = {
+    display: "inline",
+    lineHeight: 0,
+    position: "relative",
+    top: 6,
+    p: 2,
+    boxShadow: "md",
+  };
+
+  return (
+    <HStack w="100%" ml={3} mt={-6}>
+      {jobs &&
+        jobs.map((combo, i) => (
+          <Box key={i} {...boxStyles} layerStyle="ff7">
+            <JobsIcon jobs={combo} />
+          </Box>
+        ))}
+      {!jobs && (
+        <Box {...boxStyles} layerStyle="ff7">
+          <Icon boxSize="20px" as={FaInfoCircle} />
+        </Box>
+      )}
+    </HStack>
+  );
+};
 
 export { Section };

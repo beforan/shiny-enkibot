@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/react";
+import { Container, Stack } from "@chakra-ui/react";
 import Head from "next/head";
 import { getEnkibotJson } from "lib/enki-data";
 import { Section } from "components/Tips";
@@ -23,17 +23,23 @@ const Home = ({ enkiData }) => {
     <>
       <HeadTag />
 
-      <Stack>
-        {/* <Button onClick={() => setShowData(!showData)}>
+      <Container>
+        <Stack>
+          {/* <Button onClick={() => setShowData(!showData)}>
           {showData ? "Hide" : "Show"} Data
-        </Button>
+          </Button>
         {showData && <pre>{JSON.stringify(enkiData, null, 2)}</pre>} */}
 
-        {Object.keys(enkiData).map((section) => (
-          // TODO: filter sections? Anchor them?
-          <Section title={section} groups={enkiData[section]} />
-        ))}
-      </Stack>
+          {Object.keys(enkiData).map((section) => {
+            // skip the intro from the tips list
+            // we'll hide it in a menu
+            if (section === "Intro") return null;
+
+            // TODO: filter sections? Anchor them?
+            return <Section title={section} groups={enkiData[section]} />;
+          })}
+        </Stack>
+      </Container>
     </>
   );
 };
