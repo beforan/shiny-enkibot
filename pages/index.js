@@ -1,6 +1,5 @@
 import { Stack } from "@chakra-ui/react";
 import Head from "next/head";
-import { useState } from "react";
 import { getEnkibotJson } from "lib/enki-data";
 import { Section } from "components/Tips";
 
@@ -25,7 +24,6 @@ const Home = ({ enkiData }) => {
       <HeadTag />
 
       <Stack>
-
         {/* <Button onClick={() => setShowData(!showData)}>
           {showData ? "Hide" : "Show"} Data
         </Button>
