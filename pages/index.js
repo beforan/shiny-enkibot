@@ -1,7 +1,8 @@
-import { Box, Button, Code, Heading, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import Head from "next/head";
 import { useState } from "react";
-import { getEnkibotJson } from "../lib/enki-data";
+import { getEnkibotJson } from "lib/enki-data";
+import { Section } from "components/Tips";
 
 export const getStaticProps = async () => {
   const enkiData = JSON.parse(JSON.stringify(await getEnkibotJson()));
@@ -19,18 +20,16 @@ const HeadTag = () => (
 );
 
 const Home = ({ enkiData }) => {
-  const [showData, setShowData] = useState(false);
   return (
     <>
       <HeadTag />
 
       <Stack>
-        <Box>Hello World!</Box>
 
-        <Button onClick={() => setShowData(!showData)}>
+        {/* <Button onClick={() => setShowData(!showData)}>
           {showData ? "Hide" : "Show"} Data
         </Button>
-        {showData && <pre>{JSON.stringify(enkiData, null, 2)}</pre>}
+        {showData && <pre>{JSON.stringify(enkiData, null, 2)}</pre>} */}
 
         {Object.keys(enkiData).map((section) => (
           // TODO: filter sections? Anchor them?
@@ -40,34 +39,5 @@ const Home = ({ enkiData }) => {
     </>
   );
 };
-
-const Section = ({ title, groups }) => {
-  // TODO: jobs filtering
-  return (
-    <>
-      <Heading>{title}</Heading>
-      {groups.map((group) => (
-        <TipsGroup {...group} />
-      ))}
-    </>
-  );
-};
-
-const TipsGroup = ({ jobs, tips }) => (
-  <>
-    {jobs && (
-      <Heading size="sm">
-        {jobs.map((combo) => (
-          <JobsIcon jobs={combo} />
-        ))}
-      </Heading>
-    )}
-    {tips.map((tip) => (
-      <div>{tip}</div>
-    ))}
-  </>
-);
-
-const JobsIcon = ({ jobs }) => <div>{jobs.join("+")}</div>;
 
 export default Home;
