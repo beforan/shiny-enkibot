@@ -8,6 +8,7 @@ const Heading = {
 };
 
 export const theme = extendTheme({
+  config: { initialColorMode: "light" },
   components: {
     Heading,
   },
