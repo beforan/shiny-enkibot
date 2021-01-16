@@ -1,8 +1,11 @@
-import { Container, Flex, Grid, Stack } from "@chakra-ui/react";
+import { Button, Container, Flex, Grid, Stack } from "@chakra-ui/react";
 import Head from "next/head";
 import { getEnkibotJson } from "lib/enki-data";
 import { Section } from "components/Tips";
 import AppBar from "components/AppBar";
+import JobsIcon from "components/JobsIcon";
+import { jobDefinitions } from "config/jobs";
+import { useAppContext } from "./_app";
 
 export const getStaticProps = async () => {
   const enkiData = JSON.parse(JSON.stringify(await getEnkibotJson()));
@@ -20,6 +23,7 @@ const HeadTag = () => (
 );
 
 const Home = ({ enkiData }) => {
+  const { selectedJobs, toggleJobSelected } = useAppContext();
   return (
     <>
       <HeadTag />
@@ -33,7 +37,17 @@ const Home = ({ enkiData }) => {
           <AppBar />
         </Flex>
 
-        <Flex>Job Picker</Flex>
+        <Stack>
+          {Object.keys(jobDefinitions).map((jobId) => (
+            <Button
+              key={jobId}
+              onClick={() => toggleJobSelected(jobId)}
+              colorScheme={selectedJobs[jobId] ? "blue" : "red"}
+            >
+              <JobsIcon jobs={[jobId]} />
+            </Button>
+          ))}
+        </Stack>
 
         <Flex overflow="auto" pt={4}>
           <Container maxW="120ch">

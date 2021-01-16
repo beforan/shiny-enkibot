@@ -1,4 +1,6 @@
 import { Flex, Grid, HStack, Icon, Image } from "@chakra-ui/react";
+import { jobDefinitions } from "config/jobs";
+import { forLocale } from "lib/localisation";
 import { Fragment } from "react";
 import { FaPlus } from "react-icons/fa";
 
@@ -25,7 +27,7 @@ const JobIcon = ({ job }) => {
         src={`/assets/jobs/${character}/${job}.png`}
       />
       <Flex width="100%" align="center" justify="center">
-        {job}
+        {forLocale(jobDefinitions[job].name)}
       </Flex>
     </Grid>
   );

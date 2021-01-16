@@ -10,6 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import JobsIcon from "./JobsIcon";
+import { useAppContext } from "pages/_app";
 
 const SectionHeading = ({ children, onToggle, isOpen }) => (
   <Flex p={2} onClick={onToggle} cursor="pointer" align="center">
@@ -19,8 +20,7 @@ const SectionHeading = ({ children, onToggle, isOpen }) => (
 );
 
 const Section = ({ title, groups }) => {
-  // TODO: jobs filtering
-
+  const { selectedJobs } = useAppContext();
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -31,13 +31,28 @@ const Section = ({ title, groups }) => {
 
       <Collapse in={isOpen} animateOpacity>
         <Stack p={2}>
-          {groups.map((group, i) => (
-            <TipsGroup {...group} key={i} />
-          ))}
+          {groups.map(
+            (group, i) =>
+              shouldDisplayGroup(group.jobs, selectedJobs) && (
+                <TipsGroup {...group} key={i} />
+              )
+          )}
         </Stack>
       </Collapse>
     </Stack>
   );
+};
+
+const shouldDisplayGroup = (jobs, selectedJobs) => {
+  // no jobs means info, which we should always display :)
+  if (!jobs) return true;
+
+  // here's where we handle the AND/OR criteria for job filtering
+  // first array is OR so we can early exit on any match
+  for (const combo of jobs) {
+    // second array is AND so we use `every()` and check if selected
+    if (combo.every((job) => selectedJobs[job])) return true;
+  }
 };
 
 const TipsGroup = ({ jobs, tips }) => {
