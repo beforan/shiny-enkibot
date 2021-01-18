@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import JobsIcon from "./JobsIcon";
 import { useAppContext } from "pages/_app";
+import { memo } from "react";
 
 const SectionHeading = ({ children, onToggle, isOpen }) => (
   <Flex p={2} onClick={onToggle} cursor="pointer" align="center">
@@ -34,7 +35,7 @@ const Section = ({ title, groups }) => {
           {groups.map(
             (group, i) =>
               shouldDisplayGroup(group.jobs, selectedJobs) && (
-                <TipsGroup {...group} key={i} />
+                <MemoTipsGroup isOpen={isOpen} {...group} key={i} />
               )
           )}
         </Stack>
@@ -68,6 +69,7 @@ const TipsGroup = ({ jobs, tips }) => {
     </div>
   );
 };
+const MemoTipsGroup = memo(TipsGroup, (prev, next) => !next.isOpen);
 
 const GroupJobs = ({ jobs }) => {
   const boxStyles = {
