@@ -12,6 +12,7 @@ import {
 import JobsIcon from "./JobsIcon";
 import { useAppContext } from "pages/_app";
 import { memo } from "react";
+import TipsMarkdown from "./TipsMarkdown";
 
 const SectionHeading = ({ children, onToggle, isOpen }) => (
   <Flex p={2} onClick={onToggle} cursor="pointer" align="center">
@@ -63,7 +64,7 @@ const TipsGroup = ({ jobs, tips }) => {
 
       <Stack w="100%" p={2} pt={8} boxShadow="lg" layerStyle="ff7">
         {tips.map((t, i) => (
-          <Flex key={i}>{t}</Flex>
+          <TipsMarkdown key={i}>{t}</TipsMarkdown>
         ))}
       </Stack>
     </div>

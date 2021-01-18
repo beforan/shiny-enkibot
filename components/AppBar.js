@@ -4,12 +4,14 @@ import { rainbowColors } from "lib/rainbowColors";
 // import InfoDrawer from "./Info";
 // import { JobDrawer } from "./JobSelector";
 import { FaGithub } from "react-icons/fa";
+import InfoDrawer from "./Info";
 
 const AppHeading = ({ children }) => {
   return (
     <Heading
       size="lg"
       fontWeight="bold"
+      textShadow="none"
       bgGradient={`linear(to-r,${rainbowColors.slice(0, 7).join(",")})`}
       bgClip="text"
       lineHeight={1.5}
@@ -19,7 +21,7 @@ const AppHeading = ({ children }) => {
   );
 };
 
-const AppBar = () => {
+const AppBar = ({ intro, info }) => {
   return (
     <Flex
       layerStyle="ff7"
@@ -36,9 +38,9 @@ const AppBar = () => {
       <AppHeading>Shiny Enkibot</AppHeading>
 
       <HStack>
-        {/* <InfoDrawer />
+        <InfoDrawer intro={intro} info={info} />
 
-      <SettingsMenu /> */}
+        {/* <SettingsMenu /> */}
 
         <IconButton
           as={Link}

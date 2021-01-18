@@ -6,12 +6,14 @@ import AppBar from "components/AppBar";
 import JobsIcon from "components/JobsIcon";
 import { jobDefinitions } from "config/jobs";
 import { useAppContext } from "./_app";
+import { readMarkdownFile } from "lib/markdown";
 
 export const getStaticProps = async () => {
   const enkiData = JSON.parse(JSON.stringify(await getEnkibotJson()));
+  const info = await readMarkdownFile("content/info.md");
 
   return {
-    props: { enkiData },
+    props: { enkiData, info },
   };
 };
 
@@ -22,8 +24,9 @@ const HeadTag = () => (
   </Head>
 );
 
-const Home = ({ enkiData }) => {
+const Home = ({ enkiData, info }) => {
   const { selectedJobs, toggleJobSelected } = useAppContext();
+  console.log(info);
   return (
     <>
       <HeadTag />
@@ -34,7 +37,7 @@ const Home = ({ enkiData }) => {
         height="100vh"
       >
         <Flex gridColumn="span 2">
-          <AppBar />
+          <AppBar intro={enkiData.Intro[0].tips} info={info} />
         </Flex>
 
         <Stack>

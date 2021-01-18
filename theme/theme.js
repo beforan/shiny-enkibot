@@ -1,9 +1,21 @@
 import { extendTheme } from "@chakra-ui/react";
 
+const global = {
+  body: { textShadow: "1px 1px #000" },
+  ul: { paddingLeft: "2em" },
+};
+
 const Heading = {
   baseStyle: {
     fontWeight: "medium",
     lineHeight: "inherit",
+  },
+};
+
+const Link = {
+  baseStyle: {
+    color: "cyan.200",
+    fontWeight: "bold",
   },
 };
 
@@ -28,10 +40,14 @@ const layerStyles = {
 
 export const theme = extendTheme({
   config: { initialColorMode: "dark" },
+  styles: {
+    global,
+  },
   layerStyles,
   shadows,
   components: {
     Heading,
+    Link,
   },
   gradients,
 });
