@@ -6,6 +6,7 @@ import { rainbowColors } from "lib/rainbowColors";
 import { FaGithub } from "react-icons/fa";
 import InfoDrawer from "./Info";
 import { JobsDrawer } from "./JobsSelector";
+import SettingsMenu from "./SettingsMenu";
 
 const AppHeading = ({ children }) => {
   return (
@@ -41,7 +42,7 @@ const AppBar = ({ intro, info }) => {
       <HStack>
         <InfoDrawer intro={intro} info={info} />
 
-        {/* <SettingsMenu /> */}
+        <SettingsMenu />
 
         <IconButton
           as={Link}

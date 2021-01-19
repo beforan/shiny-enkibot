@@ -3,6 +3,7 @@ import { theme } from "theme/theme";
 
 import { createContext, useContext, useMemo, useState } from "react";
 import { jobDefinitions } from "config/jobs";
+import { SettingsProvider } from "contexts/Settings";
 
 const defaults = {
   selectedJobs: {},
@@ -33,7 +34,11 @@ const AppProvider = ({ children }) => {
     selectAllJobs,
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <SettingsProvider>
+      <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+    </SettingsProvider>
+  );
 };
 
 function MyApp({ Component, pageProps }) {

@@ -21,9 +21,9 @@ const JobsSelector = () => {
   return (
     <Stack w="100%" spacing={0}>
       <Button
-        m={2}
+        m={4}
         minHeight="2.5em"
-        colorScheme="cyan"
+        colorScheme="blue"
         variant={anyJobs ? "solid" : "outline"}
         borderWidth={1}
         onClick={anyJobs ? clearSelectedJobs : selectAllJobs}
@@ -31,7 +31,7 @@ const JobsSelector = () => {
       >
         {anyJobs ? "Clear" : "Select"} All
       </Button>
-      <Stack overflow="auto" p={2} pt={0}>
+      <Stack overflow="auto" p={4} pt={0}>
         {Object.keys(jobList).map((jobId) => {
           const isSelected = selectedJobs[jobId];
           return (
