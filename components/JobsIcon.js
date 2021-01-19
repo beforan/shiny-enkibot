@@ -6,7 +6,7 @@ import { FaPlus } from "react-icons/fa";
 
 const JobsIcon = ({ jobs }) => {
   return (
-    <HStack>
+    <HStack w="100%">
       {jobs.map((job, i) => (
         <Fragment key={i}>
           <JobIcon job={job} />

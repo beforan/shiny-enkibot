@@ -5,6 +5,7 @@ import { rainbowColors } from "lib/rainbowColors";
 // import { JobDrawer } from "./JobSelector";
 import { FaGithub } from "react-icons/fa";
 import InfoDrawer from "./Info";
+import { JobsDrawer } from "./JobsSelector";
 
 const AppHeading = ({ children }) => {
   return (
@@ -31,8 +32,8 @@ const AppBar = ({ intro, info }) => {
       w="100%"
       boxShadow="appbar"
     >
-      <Flex visibility={{ base: "visible", md: "hidden" }}>
-        {/* <JobDrawer /> */}
+      <Flex visibility={{ base: "visible", lg: "hidden" }}>
+        <JobsDrawer />
       </Flex>
 
       <AppHeading>Shiny Enkibot</AppHeading>

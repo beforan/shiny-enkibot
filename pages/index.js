@@ -29,7 +29,7 @@ const Home = ({ enkiData, info }) => {
 
       <Grid
         templateRows="auto minmax(200px, 1fr)"
-        templateColumns="350px 1fr"
+        templateColumns="250px 1fr"
         height="100vh"
       >
         <Flex gridColumn="span 2">

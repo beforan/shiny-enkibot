@@ -1,7 +1,10 @@
-import { Button, SimpleGrid, Stack } from "@chakra-ui/react";
+import { Button, Flex, Icon, Stack } from "@chakra-ui/react";
 import { jobDefinitions } from "config/jobs";
 import { useAppContext } from "pages/_app";
 import { useMemo } from "react";
+import { FaCheck, FaCheckSquare, FaTimes, FaTimesCircle } from "react-icons/fa";
+import { GiBroadsword } from "react-icons/gi";
+import AppDrawer from "./AppDrawer";
 import JobsIcon from "./JobsIcon";
 
 const JobsSelector = () => {
@@ -16,28 +19,60 @@ const JobsSelector = () => {
   const jobList = useMemo(() => jobDefinitions);
 
   return (
-    <Stack p={2} spacing={0} w="100%">
+    <Stack w="100%" spacing={0}>
       <Button
+        m={2}
         minHeight="2.5em"
         colorScheme="cyan"
-        variant="outline"
+        variant={anyJobs ? "solid" : "outline"}
+        borderWidth={1}
         onClick={anyJobs ? clearSelectedJobs : selectAllJobs}
+        leftIcon={anyJobs ? <FaTimesCircle /> : <FaCheckSquare />}
       >
         {anyJobs ? "Clear" : "Select"} All
       </Button>
-      <SimpleGrid py={2} columns={2} spacing={2} autoRows="min-content">
-        {Object.keys(jobList).map((jobId) => (
-          <Button
-            key={jobId}
-            onClick={() => toggleJobSelected(jobId)}
-            colorScheme={selectedJobs[jobId] ? "blue" : "red"}
-          >
-            <JobsIcon jobs={[jobId]} />
-          </Button>
-        ))}
-      </SimpleGrid>
+      <Stack overflow="auto" p={2} pt={0}>
+        {Object.keys(jobList).map((jobId) => {
+          const isSelected = selectedJobs[jobId];
+          return (
+            <Button
+              boxShadow="2px 2px black"
+              minHeight="2.5em"
+              key={jobId}
+              onClick={() => toggleJobSelected(jobId)}
+              colorScheme={isSelected ? "green" : "red"}
+              variant={"solid"}
+              leftIcon={
+                isSelected ? (
+                  <Icon color="green.500" as={FaCheck} />
+                ) : (
+                  <Icon color="red.500" as={FaTimes} />
+                )
+              }
+            >
+              <JobsIcon jobs={[jobId]} />
+            </Button>
+          );
+        })}
+      </Stack>
     </Stack>
   );
 };
+
+export const JobsDrawer = () => (
+  <AppDrawer
+    header="Filter Jobs"
+    button={
+      <Flex align="center">
+        <Flex as={GiBroadsword} mr={2} />
+        Jobs
+      </Flex>
+    }
+    placement="left"
+    scrollBehavior="inline"
+  >
+    <JobsSelector />
+  </AppDrawer>
+);
 
 export default JobsSelector;
