@@ -1,7 +1,7 @@
 // pages/_document.js
 
 import { ColorModeScript } from "@chakra-ui/react";
-import NextDocument, { Html, Main, NextScript } from "next/document";
+import NextDocument, { Html, Main, Head, NextScript } from "next/document";
 import { theme } from "theme/theme";
 
 class Document extends NextDocument {
@@ -12,6 +12,12 @@ class Document extends NextDocument {
   render() {
     return (
       <Html lang="en">
+        <Head>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+        </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
