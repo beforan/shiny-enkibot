@@ -6,7 +6,7 @@ const remarkGfm = require("remark-gfm");
 
 const TipsMarkdown = ({ children, ...p }) => (
   <ReactMarkdown
-    plugins={remarkGfm}
+    plugins={[remarkGfm]}
     renderers={{
       link: Link,
     }}

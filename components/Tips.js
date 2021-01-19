@@ -22,7 +22,6 @@ const SectionHeading = ({ children, onToggle, isOpen }) => (
 );
 
 const Section = ({ title, groups }) => {
-  const { selectedJobs } = useAppContext();
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -32,14 +31,13 @@ const Section = ({ title, groups }) => {
       </SectionHeading>
 
       <Collapse in={isOpen} animateOpacity>
-        <Stack p={2}>
-          {groups.map(
-            (group, i) =>
-              shouldDisplayGroup(group.jobs, selectedJobs) && (
-                <MemoTipsGroup isOpen={isOpen} {...group} key={i} />
-              )
-          )}
-        </Stack>
+        {isOpen && (
+          <Stack p={2}>
+            {groups.map((group, i) => (
+              <TipsGroup {...group} key={i} />
+            ))}
+          </Stack>
+        )}
       </Collapse>
     </Stack>
   );
@@ -58,8 +56,9 @@ const shouldDisplayGroup = (jobs, selectedJobs) => {
 };
 
 const TipsGroup = ({ jobs, tips }) => {
+  const { selectedJobs } = useAppContext();
   return (
-    <div>
+    <Box hidden={!shouldDisplayGroup(jobs, selectedJobs)}>
       <GroupJobs jobs={jobs} />
 
       <Stack w="100%" p={2} pt={8} boxShadow="lg" layerStyle="ff7">
@@ -67,10 +66,9 @@ const TipsGroup = ({ jobs, tips }) => {
           <TipsMarkdown key={i}>{t}</TipsMarkdown>
         ))}
       </Stack>
-    </div>
+    </Box>
   );
 };
-const MemoTipsGroup = memo(TipsGroup, (prev, next) => !next.isOpen);
 
 const GroupJobs = ({ jobs }) => {
   const boxStyles = {

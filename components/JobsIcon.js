@@ -27,7 +27,7 @@ const JobIcon = ({ job }) => {
         src={`/assets/jobs/${character}/${job}.png`}
       />
       <Flex width="100%" align="center" justify="center">
-        {forLocale(jobDefinitions[job].name)}
+        {forLocale(jobDefinitions[job].name, "Advance")}
       </Flex>
     </Grid>
   );

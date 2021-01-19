@@ -1,27 +1,39 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "theme/theme";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { jobDefinitions } from "config/jobs";
 
-const AppContext = createContext({
+const defaults = {
   selectedJobs: {},
   toggleJobSelected: (job) => {},
-});
+  clearSelectedJobs: () => {},
+  selectAllJobs: () => {},
+};
+
+const AppContext = createContext(defaults);
 
 export const useAppContext = () => useContext(AppContext);
 
 const AppProvider = ({ children }) => {
-  const [selectedJobs, setSelectedJobs] = useState(jobDefinitions);
+  const jobList = useMemo(() => jobDefinitions);
+  const [selectedJobs, setSelectedJobs] = useState({});
 
   const toggleJobSelected = (job) =>
     setSelectedJobs((old) => ({ ...old, [job]: !old[job] }));
 
-  return (
-    <AppContext.Provider value={{ selectedJobs, toggleJobSelected }}>
-      {children}
-    </AppContext.Provider>
-  );
+  const selectAllJobs = () =>
+    Object.keys(jobList).forEach((job) => toggleJobSelected(job));
+  const clearSelectedJobs = () => setSelectedJobs({});
+
+  const value = {
+    selectedJobs,
+    toggleJobSelected,
+    clearSelectedJobs,
+    selectAllJobs,
+  };
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 function MyApp({ Component, pageProps }) {
