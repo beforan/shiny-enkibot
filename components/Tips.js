@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import JobsIcon from "./JobsIcon";
-import { useAppContext } from "pages/_app";
+import { useAppContext } from "contexts/App";
 import TipsMarkdown from "./TipsMarkdown";
 
 const SectionHeading = ({ children, onToggle, isOpen }) => (

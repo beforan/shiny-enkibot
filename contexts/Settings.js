@@ -45,8 +45,8 @@ const defaults = {
 
 const SettingsContext = createContext({
   ...defaults,
-  setCharacter: (character) => {},
-  setLocale: (locale) => {},
+  setCharacter: (character) => {}, // eslint-disable-line
+  setLocale: (locale) => {}, // eslint-disable-line
 });
 
 export const useSettings = () => useContext(SettingsContext);

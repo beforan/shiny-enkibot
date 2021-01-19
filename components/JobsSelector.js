@@ -1,6 +1,6 @@
 import { Button, Flex, Icon, Stack } from "@chakra-ui/react";
 import { jobDefinitions } from "config/jobs";
-import { useAppContext } from "pages/_app";
+import { useAppContext } from "contexts/App";
 import { useMemo } from "react";
 import { FaCheck, FaCheckSquare, FaTimes, FaTimesCircle } from "react-icons/fa";
 import { GiBroadsword } from "react-icons/gi";
