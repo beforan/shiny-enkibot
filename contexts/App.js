@@ -1,6 +1,7 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { jobDefinitions } from "config/jobs";
 import { SettingsProvider } from "contexts/Settings";
+import { useStorage } from "lib/local-storage";
 
 const defaults = {
   selectedJobs: {},
@@ -13,9 +14,36 @@ const AppContext = createContext(defaults);
 
 export const useAppContext = () => useContext(AppContext);
 
+// Storage backed job selection
+const storageKey = "shiny-enkibot-selectedjobs";
+const useSelectedJobsState = () => {
+  const storage = useStorage(storageKey);
+
+  const [selectedJobs, setSelectedJobs] = useState({});
+  useEffect(() => {
+    const stored = storage.get();
+
+    if (!stored) {
+      setSelectedJobs({});
+      return;
+    }
+
+    if (!stored || stored === selectedJobs) return;
+    setSelectedJobs(stored);
+  }, []); // eslint-disable-line
+
+  useEffect(() => {
+    if (selectedJobs) {
+      storage.set(selectedJobs);
+    }
+  }, [selectedJobs]);
+
+  return [selectedJobs, setSelectedJobs];
+};
+
 export const AppProvider = ({ children }) => {
   const jobList = useMemo(() => jobDefinitions);
-  const [selectedJobs, setSelectedJobs] = useState({});
+  const [selectedJobs, setSelectedJobs] = useSelectedJobsState();
 
   const toggleJobSelected = (job) =>
     setSelectedJobs((old) => ({ ...old, [job]: !old[job] }));

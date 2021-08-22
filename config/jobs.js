@@ -14,6 +14,8 @@ const Job = (id, name) => ({
  * Master Job List
  */
 const jobs = [
+  Job("FRE", localise("Freelancer", { [RPGe]: "Normal", [Anthology]: "Bare" })),
+
   // Wind
   Job("KGT", "Knight"),
   Job("MNK", "Monk"),
@@ -46,7 +48,7 @@ const jobs = [
   Job("TIM", localise("TimeMage", { [Advance]: "Time Mage" })),
   Job("SUM", "Summoner"),
   Job("RDM", "Red Mage"),
-  // Mime
+  Job("MIM", "Mime"),
 
   // Fire
   Job(
@@ -63,6 +65,12 @@ const jobs = [
   Job("DRG", localise("Dragoon", { [Anthology]: "Lancer" })),
   Job("DNC", "Dancer"),
   Job("CHM", "Chemist"),
+
+  // Advance
+  Job("CAN", "Cannoneer"),
+  Job("ORC", "Oracle"),
+  Job("GLD", "Gladiator"),
+  // Necromancer, not currently used by enkibot
 ];
 
 // convert the master list to a useful dictionary for the app

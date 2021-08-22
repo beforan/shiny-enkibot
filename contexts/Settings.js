@@ -1,20 +1,12 @@
 import { useState, createContext, useContext, useEffect } from "react";
 import characters from "config/characters";
 import * as locales from "config/locales";
-
-// storage
-const storageKey = "shiny-enkibot-settings";
-const isStorageSupported = typeof Storage !== "undefined";
-const storage = {
-  get: () =>
-    isStorageSupported && JSON.parse(window.localStorage.getItem(storageKey)),
-  set: (v) =>
-    isStorageSupported &&
-    window.localStorage.setItem(storageKey, JSON.stringify(v)),
-};
+import { useStorage } from "lib/local-storage";
 
 // storage backed state
+const storageKey = "shiny-enkibot-settings";
 const useSettingsState = () => {
+  const storage = useStorage(storageKey);
   const [settings, setSettings] = useState(defaults);
   useEffect(() => {
     const stored = storage.get();
@@ -26,8 +18,7 @@ const useSettingsState = () => {
 
     if (!stored || stored === settings) return;
     setSettings(stored);
-    // eslint-disable-next-line
-  }, []);
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     if (settings) {
