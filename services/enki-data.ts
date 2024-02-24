@@ -100,7 +100,9 @@ export function parseRawEnkiData(data: string) {
 
 type SectionsAccumulator = {
   currentSectionKey: string;
-  sectionData: { [key: string]: { title: string; tips: string[] } };
+  sectionData: {
+    [key: string]: { title: string; tips: string[]; tocIndex: number };
+  };
   sectionsToc: { title: string; slug: string }[];
 };
 
@@ -118,11 +120,15 @@ function accumulateNewSection(
     const sectionKey = slugify(sectionTitle, { lower: true });
     draft.currentSectionKey = sectionKey; // so that we can accumulate tips within the current section from later lines
 
-    draft.sectionsToc.push({ title: sectionTitle, slug: sectionKey }); // so that we retain an ORDERED TOC
+    const nSections = draft.sectionsToc.push({
+      title: sectionTitle,
+      slug: sectionKey,
+    }); // so that we retain an ORDERED TOC
 
     draft.sectionData[sectionKey] = {
       // The actual data for a given section, indexed by slug
       title: sectionTitle,
+      tocIndex: nSections - 1,
       tips: [],
     };
   });
@@ -183,10 +189,8 @@ type JobGroup = {
 
 /**
  * Parse a single line of Enkibot Data, adding the result to the accumulated parse result
- * @param {*} result The result of all lines parsed so far
- * @param {*} line The current line
- * @param {*} order a value to represent the relative position of this line to others,
- * e.g. line number
+ * @param result The result of all lines parsed so far
+ * @param line The current line
  */
 const ParseLine = (result: ParseResult, line: string) => {
   // new sections as keys
