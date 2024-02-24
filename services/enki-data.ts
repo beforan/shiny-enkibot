@@ -14,6 +14,33 @@ const DUMMY_DATA_FILE = `${process.cwd()}/data/enkibot-prime_debug.md`;
 //    - job filtered content?
 //    - non-page sections e.g. Intro
 
+// -------------------------
+// TOP LEVEL SERVICE METHODS
+// -------------------------
+
+export async function getStage1Data(useDummyData: boolean = false) {
+  // TODO this can be cached?
+  const fetcher = useDummyData ? getDummyData : fetchFullData;
+
+  const rawData = await fetcher();
+
+  return parseRawEnkiData(rawData);
+}
+
+export async function getToc(useDummyData: boolean = false) {
+  return (await getStage1Data(useDummyData)).toc;
+}
+
+export async function getStage2Data(
+  sectionSlug: string,
+  includeJobs: JobTagSelection,
+  useDummyData: boolean = false
+) {
+  const stage1data = (await getStage1Data(useDummyData)).data;
+
+  return parseStage1SectionData(stage1data[sectionSlug], includeJobs);
+}
+
 // --------
 // Fetching
 // --------
@@ -75,6 +102,8 @@ const JOB_TAGS_COMBINATOR = "+";
 
 const XplatNewLine = /\r?\n/;
 
+const SlugifyRemoval = /[+?\/]/g;
+
 const SectionLinePattern = /^## (?<sectionTitle>.+)/;
 const EntryLinePattern = /^^\* (?:\[(?<jobString>.+)\] )?(?<tip>.+)/;
 
@@ -119,7 +148,10 @@ function accumulateNewSection(
   sectionTitle: string
 ) {
   return produce(accumulator, (draft: SectionsAccumulator) => {
-    const sectionKey = slugify(sectionTitle, { lower: true, remove: /[+]/g });
+    const sectionKey = slugify(sectionTitle, {
+      lower: true,
+      remove: SlugifyRemoval,
+    });
     draft.currentSectionKey = sectionKey; // so that we can accumulate tips within the current section from later lines
 
     const nSections = draft.sectionsToc.push({
