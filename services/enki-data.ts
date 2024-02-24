@@ -119,7 +119,7 @@ function accumulateNewSection(
   sectionTitle: string
 ) {
   return produce(accumulator, (draft: SectionsAccumulator) => {
-    const sectionKey = slugify(sectionTitle, { lower: true });
+    const sectionKey = slugify(sectionTitle, { lower: true, remove: /[+]/g });
     draft.currentSectionKey = sectionKey; // so that we can accumulate tips within the current section from later lines
 
     const nSections = draft.sectionsToc.push({

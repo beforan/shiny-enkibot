@@ -31,6 +31,14 @@ export default async function Page({
       if (!searchParams.section) data = JSON.stringify(stage1data, null, 2);
       else {
         // If a section is specified, do a stage 2 parse of it
+        
+        // support simple ALL JOBS filter option
+        // TODO when we add more job parsing stuff elsewhere this could be made nicer?
+        if (searchParams.jobs === "*")
+          searchParams.jobs =
+            "BER,BLM,BLU,BRD,BST,CAN,CHM,DNC,DRG,FRE,GEO,GLD,KGT,MIM,MNK,MYS,NIN,ORC,RAN,RDM,SAM,SUM,THF,TIM,WHM";
+        
+        // turn jobs CSV into JobTagSelection
         const includeJobs = (searchParams.jobs ?? "")
           .split(",")
           .reduce(
@@ -38,6 +46,7 @@ export default async function Page({
             {}
           );
 
+        // get stage2 parsed section data
         data = JSON.stringify(
           parseStage1SectionData(stage1data[searchParams.section], includeJobs),
           null,
