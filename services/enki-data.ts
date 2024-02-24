@@ -76,7 +76,7 @@ const JOB_TAGS_COMBINATOR = "+";
 const XplatNewLine = /\r?\n/;
 
 const SectionLinePattern = /^## (?<sectionTitle>.+)/;
-const EntryLinePattern = /^^\* (?:\[(?<jobstring>.+)\] )?(?<tip>.+)/;
+const EntryLinePattern = /^^\* (?:\[(?<jobString>.+)\] )?(?<tip>.+)/;
 
 // -------
 // Stage 1
@@ -101,10 +101,12 @@ export function parseRawEnkiData(data: string) {
 type SectionsAccumulator = {
   currentSectionKey: string;
   sectionData: {
-    [key: string]: { title: string; tips: string[]; tocIndex: number };
+    [key: string]: SectionData;
   };
   sectionsToc: { title: string; slug: string }[];
 };
+
+type SectionData = { title: string; tips: string[]; tocIndex: number };
 
 /**
  * Modify an ongoing SectionsAccumulator by starting a new section
@@ -165,6 +167,121 @@ function parseIntoSections(
 // Stage 2 // TODO
 // -------
 
+type ParsedSectionData = {
+  title: string;
+  tocIndex: number;
+  tips: JobTipGroup[];
+};
+
+/**
+ * Given a section's tips, and a jobs filter,
+ * Produce a JSON array of ordered tips grouped by job where possible
+ */
+
+/**
+ * Parse the markdown from Enkibot into a JSON object
+ * @param section Stage 1 Section Data for a single section
+ */
+export function parseStage1SectionData(
+  section: SectionData,
+  includeJobs: JobTagSelection
+): ParsedSectionData {
+  const { data: tips } = section.tips.reduce(parseIntoJobGroups, {
+    includeJobs,
+    currentJobString: "",
+    data: [],
+  });
+
+  return { title: section.title, tocIndex: section.tocIndex, tips };
+}
+
+// TODO: this is prime material for unit testing
+
+type JobGroupsAccumulator = {
+  includeJobs: JobTagSelection;
+  currentJobString?: string;
+  data: JobTipGroup[];
+};
+
+type JobTipGroup = {
+  jobs?: JobTagCombos;
+  tips: string[];
+};
+
+/**
+ * A 2-dimensional array for combining applicable JobTags
+ * the outer array is an OR combinator; the inner array AND
+ */
+type JobTagCombos = string[][];
+
+type JobTagSelection = { [key: JobTag]: boolean };
+type JobTag = string; //TODO: make values explicit literals
+
+/**
+ * Determine whether a given parsed JobTagCombos array
+ * matches a list of plain JobTags to
+ * @param includeJobs A boolean dictionary of Job Tags to include
+ * @param jobs The parsed Job Tag Combos to test
+ * @returns Whether there is a match
+ */
+function isJobTagMatch(includeJobs: JobTagSelection, jobs?: JobTagCombos) {
+  // no jobs means info applicable to all, which we should always display :)
+  if ((jobs?.length ?? 0) === 0) return true;
+
+  // here's where we handle the AND/OR criteria for job filtering
+  // first array is OR so we can early exit on any match
+  for (const combo of jobs!) {
+    // if it were undefined we'd have returned by now
+    // second array is AND so we use `every()` and check if selected
+    if (combo.every((job) => includeJobs[job])) return true;
+  }
+}
+
+function parseIntoJobGroups(
+  accumulator: JobGroupsAccumulator,
+  tipLine: string
+) {
+  const tipEntry = tipLine.match(EntryLinePattern); // is this line a tip entry?
+  if (tipEntry) {
+    const { jobString, tip } = tipEntry.groups!; // we know the capture group is good since we only come in here on a match!
+
+    return produce(accumulator, (draft: JobGroupsAccumulator) => {
+      const jobTagCombos = parseEnkibotJobString(jobString);
+
+      // -------------
+      // JOB FILTERING
+      // -------------
+
+      if (isJobTagMatch(accumulator.includeJobs, jobTagCombos)) {
+        // --------------
+        // GROUP TRACKING
+        // --------------
+
+        if (jobString !== accumulator.currentJobString) {
+          // if the job string has changed
+          // create a new tips group
+          draft.data.push({
+            jobs: jobTagCombos,
+            tips: [],
+          });
+
+          // update job tracking
+          if (jobString) draft.currentJobString = jobString;
+          else delete draft.currentJobString; // it's valid for there to be no jobString, for general tips
+        }
+
+        // if this is a new section AND the first has no jobs
+        // `currentJobString` won't appear to have changed
+        if (!draft.data.length) draft.data.push({ tips: [] });
+
+        // add the tip entry to the current group
+        draft.data[draft.data.length - 1].tips.push(tip);
+      }
+    });
+  }
+  return accumulator;
+}
+
 // -------------
 // OLD ENKI-DATA
 // -------------
@@ -179,12 +296,7 @@ export const oldParse = (data: string) =>
 type ParseResult = {
   currentKey: string;
   currentJobs?: string;
-  data: { [key: string]: JobGroup[] };
-};
-
-type JobGroup = {
-  jobs?: string[][];
-  tips: string[];
+  data: { [key: string]: JobTipGroup[] };
 };
 
 /**
@@ -197,7 +309,7 @@ const ParseLine = (result: ParseResult, line: string) => {
   // track the key we're under
   const section = line.match(SectionLinePattern);
   if (section) {
-    const { key } = section.groups ?? {};
+    const { sectionTitle: key } = section.groups ?? {};
     return produce(result, (draft: ParseResult) => {
       draft.currentKey = key;
       delete draft.currentJobs; // section change resets job grouping
@@ -207,7 +319,7 @@ const ParseLine = (result: ParseResult, line: string) => {
 
   const entry = line.match(EntryLinePattern);
   if (entry) {
-    const { jobs, tip } = entry.groups ?? {};
+    const { jobString: jobs, tip } = entry.groups ?? {};
 
     return produce(result, (draft: ParseResult) => {
       const section = draft.data[draft.currentKey];
@@ -215,7 +327,7 @@ const ParseLine = (result: ParseResult, line: string) => {
       // if the job has changed
       if (jobs !== result.currentJobs) {
         // create a new tips group
-        section.push({ jobs: parseEnkibotJobTags(jobs), tips: [] });
+        section.push({ jobs: parseEnkibotJobString(jobs), tips: [] });
 
         // update job tracking
         if (jobs) draft.currentJobs = jobs;
@@ -239,5 +351,5 @@ const ParseLine = (result: ParseResult, line: string) => {
  * e.g. `KGT|THF+BLU` -> `[[KGT], [THF,BLU]]` = Knight or (Thief and Blue Mage)
  * @param {*} jobs the Enkibot job tag string
  */
-export const parseEnkibotJobTags = (jobs: string) =>
+export const parseEnkibotJobString = (jobs: string) =>
   jobs?.split(JOB_TAGS_SEPARATOR).map((j) => j.split(JOB_TAGS_COMBINATOR));
